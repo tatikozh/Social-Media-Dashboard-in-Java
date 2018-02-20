@@ -20,44 +20,30 @@ import javafx.geometry.*;
 public class GUIDriver extends Application
 {
     private static Scanner scan = new Scanner(System.in);
+    private GUIView tableView;
+
+    public GUIDriver()
+    {
+        // This makes the table of cells hostings Post objects
+        tableView = new GUIView();
+        //Add table cells
+        //TODO pass in Posts to CellView constructor
+        for (int i=0; i<100; i++) {
+            tableView.add(new CellView());
+        }
+    }
 
     @Override
     public void start(Stage primaryStage)
     {
-        Group root = new Group();
-        root.getStyleClass().add("root");
+        GUIDriver controller = new GUIDriver();
 
-        HBox hbox = new HBox();
-        hbox.getStyleClass().add("hbox");
-        root.getChildren().add(hbox);
-
-        // Left Side Pane : Display Posts Here
-        Pane pane1 = new FlowPane();
-        pane1.getStyleClass().add("pane1");
-        pane1.setPrefSize(600,800);
-        hbox.getChildren().add(pane1);
-
-        // This makes the table of cells hostings Post objects
-        GUIView tableView = new GUIView(pane1);
-
-        //Add table cells
-        //TODO pass in Posts to CellView constructor
-        for (int i=0; i<100; i++)
-            tableView.add(new CellView());
-
-        
-        //Right Side Pane : Controller Panel Here
-        //TODO: Maybe add controls to create posts here?
-        Pane pane2 = new FlowPane();
-        pane2.getStyleClass().add("pane2");
-        pane2.setPrefSize(600,800);
-        hbox.getChildren().add(pane2);
-
-        Scene scene = new Scene(root, 1200, 800);
+        Scene scene = new Scene(controller.tableView.getParent(), 1200, 800);
         scene.getStylesheets().add("assets/style.css");
         primaryStage.setScene(scene);
         primaryStage.setTitle("Social Media");
         primaryStage.show();
+
     }
 
     public static void main (String [] args)
