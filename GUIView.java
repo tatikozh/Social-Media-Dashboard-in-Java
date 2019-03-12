@@ -21,17 +21,19 @@ public class GUIView {
     private final static int    V_GAP       = 20,
                                 PREF_WIDTH  = 600,
                                 PREF_HEIGHT = 700;
+    private final static String SITE_OPTION_DEFAULT = "Choose site";
     private Group root;
-    private  VBox vBox1;
-    public ArrayList<CellView> cells;
+    private VBox vBox1;
+    private ArrayList<CellView> cells;
     private RadioButton displayPosts, addPostView, interact;
     private Button submitButton, postButton, display, boostBtn, interactBtn;
-    private ComboBox <Privacy> privacyOption;
+    private ComboBox<Privacy> privacyOption;
+    private ComboBox<String> siteOptionBox;
     private CheckBox saveToCollection;
-    private Label userNameLabel;
+    private Label userNameLabel, nameLabel, messageLabel;
     private TextField name, userName;
     private TextArea message;
-    protected static int siteNumber;
+    private static int siteNumber;
 
     public GUIView() {
         // + Group -------------------------------------
@@ -136,11 +138,11 @@ public class GUIView {
     {
         vBox1.getChildren().clear();
 
-        Label nameLabel = new Label ("Name:");
+        nameLabel = new Label ("Name:");
         nameLabel.getStyleClass().add("addPostView-nameLabel");
         nameLabel.setTextFill(Color.WHITE);
         name = new TextField();
-        Label messageLabel = new Label("Message:");
+        messageLabel = new Label("Message:");
         messageLabel.getStyleClass().add("addPostView-messageLabel");
         message = new TextArea();
         message.setWrapText(true);
@@ -152,9 +154,9 @@ public class GUIView {
                 "Twitter Post"
         );
 
-        ComboBox <String> siteOptionBox = new ComboBox(siteOption);
+        siteOptionBox = new ComboBox<>(siteOption);
 
-        siteOptionBox.setValue("Choose site");
+        siteOptionBox.setValue(SITE_OPTION_DEFAULT);
 
         siteOptionBox.getSelectionModel().selectedItemProperty()
             .addListener(this::selectSite);
@@ -164,7 +166,7 @@ public class GUIView {
                 Arrays.asList(Privacy.values())
         );
 
-        privacyOption = new ComboBox(privacy);
+        privacyOption = new ComboBox<>(privacy);
         privacyOption.setValue(Privacy.PUBLIC);
         privacyOption.setVisible(false);
 
@@ -194,11 +196,23 @@ public class GUIView {
         vBox1.getChildren().add(postButton);
     }
 
+    public void clearCreatePostForm()
+    {
+        name.clear();
+        message.clear();
+        siteOptionBox.setValue(SITE_OPTION_DEFAULT);
+        userNameLabel.setVisible(false);
+        userName.setVisible(false);
+        privacyOption.setVisible(false);
+        saveToCollection.setVisible(false);
+    }
+
     private void selectSite(ObservableValue<? extends String> ov, String oldValue, String newValue)
     {
         if(newValue.equalsIgnoreCase("Facebook Post"))
         {
             siteNumber = 1;
+            privacyOption.setValue(Privacy.PUBLIC);
             privacyOption.setVisible(true);
             saveToCollection.setVisible(false);
             userNameLabel.setVisible(false);
@@ -208,6 +222,7 @@ public class GUIView {
         {
 
             siteNumber = 2;
+            saveToCollection.setSelected(false);
             saveToCollection.setVisible(true);
             privacyOption.setVisible(false);
             userNameLabel.setVisible(false);
@@ -216,6 +231,7 @@ public class GUIView {
         else if(newValue.equalsIgnoreCase("Twitter Post"))
         {
             siteNumber = 3;
+            userName.clear();
             userNameLabel.setVisible(true);
             userName.setVisible(true);
             privacyOption.setVisible(false);

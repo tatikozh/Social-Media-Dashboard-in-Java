@@ -96,6 +96,8 @@ public class GUIDriver extends Application
         }
 
         this.view.add(newCellView);
+
+        view.clearCreatePostForm();
     }
 
     public void boostBtnOnClick(ActionEvent event) {

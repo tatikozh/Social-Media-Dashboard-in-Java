@@ -58,20 +58,23 @@ public class CellView {
         cellView.getChildren().add(interactHBox);
     }
 
-    public void likeBtnOnClick(ActionEvent event) {
+    private void likeBtnOnClick(ActionEvent event) {
         likeCount++;
         reDrawLikeLabel();
     }
     private void reDrawLikeLabel() {
         likeLabel.setText(Integer.toString(likeCount));
     }
+
     public int getLikeCount() {
         return likeCount;
     }
+
     public void resetLikeCount() {
         likeCount = 0;
         reDrawLikeLabel();
     }
+
     public void boostLikeCount() {
         while (likeCount<9999) {
             likeCount++;
